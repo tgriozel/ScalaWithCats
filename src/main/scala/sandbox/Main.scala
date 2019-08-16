@@ -1,0 +1,51 @@
+package sandbox
+
+object Main extends App {
+  def chapter1(): Unit = {
+    import cats.syntax.eq._
+    import sandbox.eq.EqInstances._
+    import sandbox.model.Cat
+    import sandbox.printable.PrintableInstances._
+    import sandbox.printable.PrintableSyntax._
+    val felix = Cat("Felix", 5, "orange")
+    val johnny = Cat("Johnny", 4, "black")
+    if (felix === johnny)
+      println("Cats are equal")
+    else
+      println("Cats are different")
+    felix.print()
+  }
+
+  def chapter2(): Unit = {
+    import cats.instances.int._
+    import cats.instances.option._
+    import sandbox.model.Order
+    import sandbox.monoid.MonoidInstances.orderMonoid
+    import sandbox.monoid.SuperAdder
+    val sum = SuperAdder.add(List(1, 2, 3, 4, 5))
+    println(sum)
+    val sumOpt = SuperAdder.add(List(None, Some(1), None, Some(4), None))
+    println(sumOpt)
+    val ordersTotal = SuperAdder.add(List(Order(2.0, 3), Order(3.0, 1)))
+    println(ordersTotal)
+  }
+
+  def chapter3(): Unit = {
+    import cats.syntax.functor._
+    import sandbox.functor.FunctorInstances._
+    import sandbox.model.{Branch, Leaf, Tree}
+    val (leaf1, leaf2, leaf3, leaf4) = (Leaf(1), Leaf(2), Leaf(3), Leaf(4))
+    val branchA = Branch(leaf1, leaf2)
+    val branchB = Branch(leaf3, leaf4)
+    val tree: Tree[Int] = Branch(branchA, branchB)
+    val func = (value: Int) => (value * 10).toString
+    val transformedTree = tree.map(func)
+    println(transformedTree)
+  }
+
+  def chapter4(): Unit = {
+    import sandbox.eval.SafeFoldRight
+    println(SafeFoldRight.safeFoldRight((0 to 1000000).toList, 0)(_ + _).value)
+  }
+
+}
