@@ -44,4 +44,36 @@ object Main extends App {
     println(transformedTree)
   }
 
+  def chapter4a(): Unit = {
+    import sandbox.monad.EvalFolder
+    val folder = new EvalFolder()
+    val result = folder.foldRight(Range(0, 10000).toList, 0)(_ + _)
+    println(result)
+  }
+
+  def chapter4b(): Unit = {
+    import scala.concurrent._
+    import scala.concurrent.ExecutionContext.Implicits._
+    import scala.concurrent.duration._
+    import sandbox.monad.FactorialWriter._
+    val a = Future(factorial(5))
+    val b = Future(factorial(5))
+    val results = Await.result(Future.sequence(Vector(a, b)), 5.seconds)
+    results.foreach { futureRes =>
+      val (log, res) = futureRes.run
+      println(log.mkString("\n") + "\n" + res)
+    }
+  }
+
+  def chapter4c(): Unit = {
+    import sandbox.model.Db
+    import sandbox.monad.DbReaderFunctions
+    val db = Db(Map(1 -> "1", 2 -> "2"), Map("1" -> "1p", "2" -> "2p"))
+    println(DbReaderFunctions.checkLogin(1, "1p").run(db))
+    println(DbReaderFunctions.checkLogin(2, "2").run(db))
+    println(DbReaderFunctions.checkLogin(3, "3p").run(db))
+  }
+
+  chapter4c()
+
 }
