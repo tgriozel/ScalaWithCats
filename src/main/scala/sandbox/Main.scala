@@ -84,6 +84,13 @@ object Main extends App {
     require(CalcOperator.evalPostFix("23*1+225**+9+1/1*") == 36)
   }
 
-  chapter4d()
+  def chapter5a(): Unit = {
+    import sandbox.transformers.TransformerResponse
+    println(TransformerResponse.tacticalReport("Jazz", "Unknown"))
+    println(TransformerResponse.tacticalReport("Jazz", "Bumblebee"))
+    println(TransformerResponse.tacticalReport("Jazz", "Hot Rod"))
+  }
+
+  chapter5a()
 
 }
