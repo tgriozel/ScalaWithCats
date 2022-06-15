@@ -91,6 +91,18 @@ object Main extends App {
     println(TransformerResponse.tacticalReport("Jazz", "Hot Rod"))
   }
 
-  chapter5a()
+  def chapter9a(): Unit = {
+    import cats.instances.int._ // for Monoid
+    import sandbox.monoid.FoldMap
+    val intResult = FoldMap.foldMap(Vector(1, 2, 3))(identity)
+    println(intResult)
+    import cats.instances.string._ // for Monoid
+    val stringResult = FoldMap.foldMap(Vector(1, 2, 3))(_.toString + "! ")
+    println(stringResult)
+    import scala.concurrent.ExecutionContext.Implicits.global
+    val parallelStuff = FoldMap.parallelFoldMap((1 to 1000).toVector)((a: Int, b: Int) => a + b)
+  }
+
+  chapter9a()
 
 }
